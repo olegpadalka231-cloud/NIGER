@@ -33,9 +33,10 @@
   var inHero = function (el) { return !!el.closest('.hero'); };
 
   /* ---------- розбивка тексту на слова ---------- */
-  $$('[data-anim="words"]').forEach(function (el) {
+  function splitWords(el) {
     el.innerHTML = el.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w">' + w + '</span>'; }).join(' ');
-  });
+  }
+  $$('[data-anim="words"]').forEach(splitWords);
 
   /* ---------- початкові стани (сторінку поки що закриває прелоадер) ---------- */
   var heroLines = $$('.hero .line > span');
@@ -98,8 +99,19 @@
   });
 
   /* ---------- «Про студію»: слова проявляються в такт скролу ---------- */
-  $$('[data-anim="words"]').forEach(function (el) {
-    gsap.fromTo($$('.w', el), { opacity: 0.12 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 55%', scrub: true } });
+  var wordTweens = [];
+  function animateWords() {
+    wordTweens.forEach(function (tw) { if (tw.scrollTrigger) tw.scrollTrigger.kill(); tw.kill(); });
+    wordTweens = $$('[data-anim="words"]').map(function (el) {
+      return gsap.fromTo($$('.w', el), { opacity: 0.12 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 55%', scrub: true } });
+    });
+  }
+  animateWords();
+  // після зміни мови: розбити новий текст на слова й перебудувати тригери
+  document.addEventListener('langchange', function () {
+    $$('[data-anim="words"]').forEach(splitWords);
+    animateWords();
+    requestAnimationFrame(function () { ST.refresh(); });
   });
 
   /* ---------- біжучий рядок: швидкість і напрям залежать від скролу ---------- */
@@ -195,7 +207,20 @@
   gsap.from('.foot__big', { yPercent: 70, ease: 'none', scrollTrigger: { trigger: '.foot', start: 'top bottom', end: 'bottom bottom', scrub: true } });
 
   /* ---------- API для app.js ---------- */
+  var curtainEl = $('#curtain'), curtainBusy = false;
   window.MOTION = {
+    // «шторка» на весь екран для зміни мови чи теми
+    curtain: function (cb) {
+      if (!curtainEl || curtainBusy) { cb(); return; }
+      curtainBusy = true;
+      gsap.timeline({ onComplete: function () { curtainBusy = false; gsap.set(curtainEl, { visibility: 'hidden' }); } })
+        .set(curtainEl, { visibility: 'visible', clipPath: 'inset(100% 0% 0% 0%)' })
+        .to(curtainEl, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.55, ease: 'expo.inOut' })
+        .add(function () { cb(); })
+        .to(curtainEl, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.65, ease: 'expo.inOut' }, '+=0.08');
+    },
+    bump: function (el) { gsap.fromTo(el, { scale: 1.18 }, { scale: 1, duration: 0.6, ease: 'elastic.out(1, .5)' }); },
+    shake: function (el) { gsap.fromTo(el, { x: -8 }, { x: 0, duration: 0.5, ease: 'elastic.out(1.2, .3)' }); },
     rows: rows,
     swapGallery: swapGallery,
     step: function (fs, dir) { gsap.fromTo(fs.children, { x: 40 * dir, autoAlpha: 0 }, { x: 0, autoAlpha: 1, stagger: 0.05, duration: 0.7, overwrite: true }); },

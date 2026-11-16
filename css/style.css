@@ -4,22 +4,23 @@
    фото на всю висоту, глибокий пляшково-зелений як «тіло» бренду, золото тільки в деталях.
    ========================================================= */
 :root {
-  --bg: #EEF0EB;
-  --paper: #F8F9F5;
-  --ink: #151A16;
-  --muted: #5B645D;
-  --line: #CDD4CB;
-  --green: #1F3329;
-  --green-2: #2B4436;
-  --on-green: #ECEFE8;
-  --on-green-muted: #A7B6AA;
-  --gold: #B8945F;
-  --gold-text: #876636;
-  --btn: #1F3329;
-  --on-btn: #F3F1EA;
-  --accent: #D9C3A0;
-  --on-accent: #1A1F1B;
-  --sel: #E3E8DF;
+  --bg: #EDF1EB;
+  --paper: #F8FAF6;
+  --tint: #E1E9DF;
+  --ink: #12201A;
+  --muted: #56645B;
+  --line: #CBD5C9;
+  --green: #14372B;
+  --green-2: #1E4A3A;
+  --on-green: #EDF2EC;
+  --on-green-muted: #A6BCAE;
+  --gold: #C29A5B;
+  --gold-text: #8A6631;
+  --btn: #14372B;
+  --on-btn: #F4F2EA;
+  --accent: #DCC197;
+  --on-accent: #15201A;
+  --sel: #E0E9DC;
 
   --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
   --sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -30,16 +31,16 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0E1210; --paper: #151A17; --ink: #E7EAE3; --muted: #99A49B; --line: #29322C;
-    --green: #15211B; --green-2: #20322A; --on-green: #ECEFE8; --on-green-muted: #9DAEA1;
-    --gold: #D2B07C; --gold-text: #D9BC8C; --btn: #D9C3A0; --on-btn: #151A16; --accent: #D9C3A0; --on-accent: #151A16; --sel: #1C2420;
+    --bg: #0B1210; --paper: #111915; --tint: #0F1814; --ink: #E6ECE5; --muted: #98A79C; --line: #24302A;
+    --green: #0F2A21; --green-2: #1A3D30; --on-green: #EDF2EC; --on-green-muted: #9DB5A5;
+    --gold: #D6B57F; --gold-text: #DCBF8C; --btn: #DCC197; --on-btn: #12201A; --accent: #DCC197; --on-accent: #12201A; --sel: #17231D;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0E1210; --paper: #151A17; --ink: #E7EAE3; --muted: #99A49B; --line: #29322C;
-  --green: #15211B; --green-2: #20322A; --on-green: #ECEFE8; --on-green-muted: #9DAEA1;
-  --gold: #D2B07C; --gold-text: #D9BC8C; --btn: #D9C3A0; --on-btn: #151A16; --accent: #D9C3A0; --on-accent: #151A16; --sel: #1C2420;
+  --bg: #0B1210; --paper: #111915; --tint: #0F1814; --ink: #E6ECE5; --muted: #98A79C; --line: #24302A;
+  --green: #0F2A21; --green-2: #1A3D30; --on-green: #EDF2EC; --on-green-muted: #9DB5A5;
+  --gold: #D6B57F; --gold-text: #DCBF8C; --btn: #DCC197; --on-btn: #12201A; --accent: #DCC197; --on-accent: #12201A; --sel: #17231D;
   color-scheme: dark;
 }
 
@@ -481,3 +482,64 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .js .loader { display: none; }
 }
+
+/* =========================================================
+   Нові елементи: мова, статус, прогрес, шторка, «нагору», графік, заявка
+   ========================================================= */
+.progress { position: fixed; z-index: 70; left: 0; right: 0; top: env(safe-area-inset-top, 0px); height: 2px; pointer-events: none; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--accent)); transform-origin: left; transform: scaleX(0); }
+.curtain { position: fixed; inset: 0; z-index: 260; background: var(--green); visibility: hidden; clip-path: inset(100% 0 0 0); }
+.curtain::after { content: "BB Pets"; position: absolute; inset: 0; display: grid; place-items: center; font: 500 clamp(3rem, 2rem + 4vw, 5.5rem)/1 var(--serif); font-style: italic; color: var(--accent); }
+
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.lang button { border: 0; background: transparent; cursor: pointer; border-radius: 999px; padding: 6px 10px; font: 700 .72rem/1 var(--sans); letter-spacing: .1em; color: var(--muted); transition: background-color .4s var(--ease), color .4s var(--ease); }
+.lang button:hover { color: var(--ink); }
+.lang button[aria-pressed="true"] { background: var(--btn); color: var(--on-btn); }
+.nav.is-open .lang { border-color: rgba(237, 242, 236, .3); }
+.nav.is-open .lang button { color: var(--on-green-muted); }
+.nav.is-open .lang button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+@media (max-width: 640px) { .nav__cta { display: none !important; } .nav__actions { gap: 8px; } .theme { width: 36px; height: 36px; } }
+
+.status { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; font-size: .86rem; font-weight: 600; color: var(--muted); }
+.status__dot { width: 9px; height: 9px; border-radius: 50%; background: #B4513F; position: relative; flex-shrink: 0; }
+.status__dot.is-open { background: #3E9B6A; }
+.status__dot.is-open::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid #3E9B6A; animation: statusPing 2s ease-out infinite; }
+@keyframes statusPing { from { transform: scale(.5); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+
+.visit__clear { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(237, 242, 236, .25); background: transparent; color: var(--on-green-muted); cursor: pointer; flex-shrink: 0; transition: color .3s, border-color .3s; }
+.visit__clear:hover { color: var(--on-green); border-color: var(--on-green); }
+@media (max-width: 520px) { .visit__clear { display: none; } }
+
+.totop {
+  position: fixed; z-index: 54; right: max(18px, env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  width: 52px; height: 52px; border: 0; padding: 0; border-radius: 50%; background: var(--paper); color: var(--ink); cursor: pointer;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .35); display: grid; place-items: center;
+  opacity: 0; transform: translateY(20px) scale(.8); pointer-events: none; transition: opacity .4s ease, transform .5s var(--ease);
+}
+.totop.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.totop svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.totop circle { fill: none; stroke-width: 1.5; }
+.totop__track { stroke: var(--line); }
+.totop__ring { stroke: var(--gold); stroke-linecap: round; }
+.totop span { position: relative; font-weight: 700; transition: transform .4s var(--ease); }
+.totop:hover span { transform: translateY(-3px); }
+
+.faq-sec { background: var(--tint); }
+.contacts__head { display: grid; gap: 22px; align-content: start; min-width: 0; }
+.contacts__head h2 { margin-top: 0; }
+.contacts__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.hours { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font: 500 1.05rem/1.5 var(--sans); max-width: 340px; }
+.hours li { display: flex; justify-content: space-between; gap: 16px; padding: 3px 10px; margin-inline: -10px; border-radius: 4px; font-variant-numeric: tabular-nums; }
+.hours li.is-today { background: var(--sel); font-weight: 700; }
+.hours li.is-today span:first-child::after { content: " •"; color: var(--gold); }
+
+.days button[disabled] { opacity: .35; cursor: not-allowed; }
+.done__msg { width: 100%; max-width: 520px; margin: 4px 0; padding: 16px 18px; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 .86rem/1.6 var(--sans); background: var(--paper); border: 1px dashed var(--line); border-radius: 4px; user-select: all; max-height: 260px; overflow: auto; }
+.done__actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.link-btn { border: 0; background: none; cursor: pointer; font-weight: 700; font-size: .88rem; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; margin-top: 4px; }
+.link-btn:hover { color: var(--ink); }
+
+/* м'якший перехід кольорів при зміні теми */
+body, .services, .booking-sec, .faq-sec, .form, .nav.is-solid { transition: background-color .5s ease, color .5s ease; }
+.gitem:focus-visible, .prow:focus-within { outline: 2px solid var(--gold); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .status__dot.is-open::after { animation: none; } }
