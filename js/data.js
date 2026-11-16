@@ -111,3 +111,21 @@ window.GALLERY_TAGS = [
   { id: 'deshed',  name: 'Линька',   name_en: 'De-shedding' },
   { id: 'complex', name: 'Комплекс', name_en: 'Full groom' }
 ];
+
+// Порада майстра до кожного кроку блоку «Як проходить візит»
+window.STEP_TIPS = [
+  { uk: 'Візьміть улюблену іграшку пса: знайомий запах заспокоює.', en: 'Bring your dog’s favourite toy: a familiar smell is calming.' },
+  { uk: 'Не купайте пса вдома за день до грумінгу, ми все зробимо самі.', en: 'Skip the home bath the day before, we will take care of it.' },
+  { uk: 'Подвійну шерсть сушимо до кінця, інакше під нею заводиться волога.', en: 'Double coats are dried fully, otherwise moisture stays underneath.' },
+  { uk: 'Покажіть фото бажаної стрижки, так майстрові простіше влучити.', en: 'Show us a photo of the look you want, it helps the groomer nail it.' },
+  { uk: 'Розчісуйте пса 2–3 рази на тиждень, і колтунів не буде.', en: 'Brush 2–3 times a week and mats will not form.' }
+];
+
+// Хайлайти Instagram (кружечки). Посилання ведуть у профіль.
+window.HIGHLIGHTS = [
+  { uk: 'Роботи', en: 'Work', icon: '✂' },
+  { uk: 'Прайс', en: 'Prices', icon: '₴' },
+  { uk: 'Відгуки', en: 'Reviews', icon: '★' },
+  { uk: 'Догляд', en: 'Care tips', icon: '♡' },
+  { uk: 'Локація', en: 'Location', icon: '⌖' }
+];

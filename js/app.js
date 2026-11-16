@@ -4,7 +4,9 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var I = window.I18N, t = I.t, f = I.f;
   var SALON = window.SALON, SIZES = window.SIZES, SERVICES = window.SERVICES, CATS = window.CATEGORIES;
+  var IG = 'https://ig.me/m/' + SALON.instagram;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
   var fmt = function (n) { return Math.round(n).toLocaleString('uk-UA').replace(/[\u00a0\u202f,]/g, ' ') + ' ₴'; };
   var fmtTime = function (m) { var h = Math.floor(m / 60), mm = m % 60; return ((h ? h + ' ' + t('hr') : '') + (h && mm ? ' ' : '') + (mm ? mm + ' ' + t('min') : '')) || '0 ' + t('min'); };
   var plural = function (n) {
@@ -19,7 +21,7 @@
   };
   var byId = {}; SERVICES.forEach(function (s) { byId[s.id] = s; });
 
-  var state = { size: store.get('size'), cat: 'all', picked: store.get('picked') || [], gTag: 'all', step: 0, day: null, slot: null, lastMsg: '', lastDate: null, lastMin: 0 };
+  var state = { size: store.get('size'), cat: 'all', picked: store.get('picked') || [], gTag: 'all', day: null, slot: null, slotMin: 0 };
   if (typeof state.size !== 'number' || !(state.size >= 0 && state.size < SIZES.length)) state.size = 1;
   state.picked = (Array.isArray(state.picked) ? state.picked : []).filter(function (id) { return byId[id]; });
 
@@ -36,15 +38,16 @@
   }
   var toastT;
   function toast(msg) { var el = $('#toast'); el.textContent = msg; el.classList.add('is-on'); clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove('is-on'); }, 2800); }
-  function copyText(text, okMsg, selEl) {
+  function copyText(text, okMsg) {
     var fallback = function () {
-      if (selEl) { var r = document.createRange(); r.selectNodeContents(selEl); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-      toast(t('copy_fail'));
+      var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove(); toast(ok ? okMsg : t('copy_fail'));
     };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, fallback);
     else fallback();
   }
-  // Поточний час у часовому поясі салону
   function salonNow() {
     try {
       var p = new Intl.DateTimeFormat('en-GB', { timeZone: SALON.timezone, weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date());
@@ -54,10 +57,16 @@
   }
   var hh = function (h) { return (h < 10 ? '0' : '') + h + ':00'; };
 
-  /* ---------- статус «відчинено / зачинено» і графік ---------- */
-  function renderStatus() {
+  /* ---------- шкала «сьогодні» і статус ---------- */
+  function renderToday() {
     var n = salonNow(), today = SALON.hours[n.dow], mins = n.h * 60 + n.m;
     var open = today && mins >= today[0] * 60 && mins < today[1] * 60;
+    var A = 7, B = 22, pct = function (m) { return Math.max(0, Math.min(100, (m / 60 - A) / (B - A) * 100)); };
+    var html = '<span class="today__track"></span>';
+    if (today) html += '<span class="today__open" style="left:' + pct(today[0] * 60) + '%;width:' + (pct(today[1] * 60) - pct(today[0] * 60)) + '%"></span>';
+    for (var h = 8; h <= 21; h += 2) html += '<span class="today__tick" style="left:' + pct(h * 60) + '%">' + h + ':00</span>';
+    if (mins >= A * 60 && mins <= B * 60) html += '<span class="today__now" style="left:' + pct(mins) + '%"></span>';
+    $('#todayScale').innerHTML = html;
     $('#statusDot').classList.toggle('is-open', !!open);
     if (open) { $('#statusText').textContent = I.fill(t('open_until'), { t: hh(today[1]) }); return; }
     for (var i = 0; i < 8; i++) {
@@ -68,19 +77,23 @@
       return;
     }
   }
-  function renderContacts() {
-    $('#addrText').textContent = f(SALON, 'address');
+
+  /* ---------- контакти, хайлайти, довідники ---------- */
+  function renderStatic() {
+    $('#addrBig').textContent = f(SALON, 'address');
     $('#addrNote').textContent = f(SALON, 'addressNote');
     $('#routeBtn').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(SALON.mapsQuery);
     if (SALON.phone) { $('#phoneRow').hidden = false; $('#phoneText').textContent = SALON.phone; }
-    var now = salonNow(), order = [1, 2, 3, 4, 5, 6, 0];
-    $('#hoursList').innerHTML = order.map(function (d) {
+    var now = salonNow();
+    $('#hoursList').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(function (d) {
       var h = SALON.hours[d];
       return '<li' + (d === now.dow ? ' class="is-today"' : '') + '><span>' + t('dow_full')[d] + '</span><span>' + (h ? hh(h[0]) + '–' + hh(h[1]) : t('dayoff')) + '</span></li>';
     }).join('');
     $('#breeds').innerHTML = t('breeds').map(function (b) { return '<option value="' + esc(b) + '">'; }).join('');
-    var words = t('marquee'), seq = words.concat(words).map(function (w) { return '<span>' + w + '</span>'; }).join('');
-    $('#marquee').innerHTML = seq;
+    $('#hlList').innerHTML = (window.HIGHLIGHTS || []).map(function (h) {
+      return '<li><a href="https://www.instagram.com/' + SALON.instagram + '/" target="_blank" rel="noopener"><span class="hl__ring"><span aria-hidden="true">' + h.icon + '</span></span>' + (I.lang === 'en' ? h.en : h.uk) + '</a></li>';
+    }).join('');
+    stepTip(curStep);
   }
 
   /* ---------- перемикачі розміру ---------- */
@@ -113,7 +126,7 @@
   function setSize(i) {
     state.size = i; store.set('size', i);
     tabEls.forEach(function (el) { $$('button', el).forEach(function (b) { b.setAttribute('aria-checked', +b.dataset.i === i); }); });
-    movePills(); updatePrices(); renderPick();
+    movePills(); updatePrices(); renderChips(); update();
   }
 
   /* ---------- прайс ---------- */
@@ -144,7 +157,6 @@
       tweenText($('[data-p]', row), s.price[state.size], fmt);
       $('[data-t]', row).textContent = '≈ ' + fmtTime(s.time[state.size]);
     });
-    updateTotals();
   }
   function togglePick(id, on) {
     var i = state.picked.indexOf(id);
@@ -156,32 +168,38 @@
     if (row) {
       row.classList.toggle('is-on', on);
       var b = $('.prow__add', row); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', (on ? t('remove') : t('add')) + ': ' + f(byId[id], 'name'));
-      if (on && window.MOTION) window.MOTION.bump($('#visitSum'));
     }
+    if (on && window.MOTION) window.MOTION.bump($('#visitSum'));
     var c = $('#pick-' + id); if (c) c.checked = on;
-    updateTotals();
+    update();
   }
   $('#priceList').addEventListener('click', function (e) { var row = e.target.closest('.prow'); if (row) togglePick(row.dataset.id); });
   $('#visitClear').addEventListener('click', function () { state.picked.slice().forEach(function (id) { togglePick(id, false); }); });
-
   function totals() { return state.picked.reduce(function (a, id) { var s = byId[id]; a.sum += s.price[state.size]; a.time += s.time[state.size]; return a; }, { sum: 0, time: 0 }); }
-  function updateTotals() {
-    var tt = totals(), n = state.picked.length;
-    tweenText($('#visitSum'), tt.sum, fmt);
-    $('#visitText').textContent = n ? n + ' ' + plural(n) + ' · ≈ ' + fmtTime(tt.time) : t('nothing');
-    tweenText($('#formSum'), tt.sum, fmt);
-    $('#formTime').textContent = '≈ ' + fmtTime(tt.time);
-    visitBar();
-  }
   var inServices = false, visit = $('#visitBar');
   function visitBar() { visit.classList.toggle('is-on', inServices && state.picked.length > 0); }
   if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { inServices = en[0].isIntersecting; visitBar(); }, { rootMargin: '-30% 0px -30% 0px' }).observe($('#services'));
-  $('#visitBook').addEventListener('click', function () {
-    if (!$('#done').hidden) resetBooking();
-    goStep($('#f-dog').value.trim() ? 1 : 0); scrollToEl('#booking');
-  });
+  $('#visitBook').addEventListener('click', function () { scrollToEl('#booking'); });
 
-  /* ---------- галерея ---------- */
+  /* ---------- процес: активний крок ---------- */
+  var steps = $$('#stepList .step'), stepImgs = $$('#stepMedia img'), curStep = 0;
+  function stepTip(i) { var tip = (window.STEP_TIPS || [])[i]; if (tip) $('#stepTip').textContent = I.lang === 'en' ? tip.en : tip.uk; }
+  function setStep(i) {
+    curStep = i;
+    steps.forEach(function (s, k) { s.classList.toggle('is-on', k === i); });
+    stepImgs.forEach(function (im) { im.classList.toggle('is-on', +im.dataset.step === i); });
+    $('#stepMeter').style.transform = 'scaleX(' + (i + 1) / steps.length + ')';
+    var tipEl = $('#stepTip');
+    if (window.MOTION) window.MOTION.swapText(tipEl, function () { stepTip(i); }); else stepTip(i);
+  }
+  if ('IntersectionObserver' in window) {
+    var sio = new IntersectionObserver(function (en) {
+      en.forEach(function (x) { if (x.isIntersecting) { var i = steps.indexOf(x.target); if (i !== curStep) setStep(i); } });
+    }, { rootMargin: '-48% 0px -48% 0px' });
+    steps.forEach(function (s) { sio.observe(s); });
+  }
+
+  /* ---------- галерея і лайтбокс ---------- */
   var gList = window.GALLERY.slice();
   function renderGalTabs() {
     $('#galTabs').innerHTML = window.GALLERY_TAGS.map(function (g) { return '<button type="button" aria-pressed="' + (g.id === state.gTag) + '" data-t="' + g.id + '">' + f(g, 'name') + '</button>'; }).join('');
@@ -209,8 +227,6 @@
     });
   }
   $('#galleryGrid').addEventListener('click', function (e) { var b = e.target.closest('[data-g]'); if (b) openLb(+b.dataset.g, b); });
-
-  /* ---------- лайтбокс ---------- */
   var lb = $('#lightbox'), lbIdx = 0, lbFrom = null;
   function fillLb() {
     var g = gList[lbIdx];
@@ -234,7 +250,7 @@
   lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
   $('#lbBook').addEventListener('click', function (e) {
     e.preventDefault(); var g = gList[lbIdx]; closeLb();
-    var note = $('#f-note'); if (!note.value) note.value = I.fill(t('same_note'), { n: f(g, 'name'), s: f(g, 'service').toLowerCase() });
+    var note = $('#f-note'); if (!note.value) { note.value = I.fill(t('same_note'), { n: f(g, 'name'), s: f(g, 'service').toLowerCase() }); update(); }
     setTimeout(function () { scrollToEl('#booking'); }, 350);
   });
   document.addEventListener('keydown', function (e) {
@@ -248,12 +264,11 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
-  // свайп у лайтбоксі на телефоні
   var sx = null;
   lb.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener('touchend', function (e) { if (sx == null) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) stepLb(dx < 0 ? 1 : -1); sx = null; });
 
-  /* ---------- FAQ: плавне розкриття ---------- */
+  /* ---------- FAQ ---------- */
   $$('#faqList details').forEach(function (d) {
     var sum = $('summary', d), body = $('.faq__a', d);
     sum.addEventListener('click', function (e) {
@@ -269,141 +284,154 @@
     });
   });
 
-  /* ---------- запис ---------- */
-  var fsets = $$('.fs'), stepLabels = $$('.form__steps span'), err = $('#formErr');
-  function renderPick() {
+  /* ---------- конструктор заявки з живим повідомленням ---------- */
+  function renderChips() {
     $('#formServices').innerHTML = SERVICES.map(function (s) {
       var on = state.picked.indexOf(s.id) > -1;
-      return '<label><input type="checkbox" id="pick-' + s.id + '" value="' + s.id + '"' + (on ? ' checked' : '') + '>' +
-        '<span class="n">' + f(s, 'name') + '</span><span class="p">' + fmt(s.price[state.size]) + '</span><small>≈ ' + fmtTime(s.time[state.size]) + '</small></label>';
+      return '<label class="chip"><input type="checkbox" id="pick-' + s.id + '" value="' + s.id + '"' + (on ? ' checked' : '') + '>' + f(s, 'name') + ' <small>' + fmt(s.price[state.size]) + '</small></label>';
     }).join('');
   }
   $('#formServices').addEventListener('change', function (e) { togglePick(e.target.value, e.target.checked); });
 
   var days = [];
   (function () { var d = new Date(); d.setHours(0, 0, 0, 0); for (var i = 0; i < 14; i++) { var x = new Date(d); x.setDate(d.getDate() + i); days.push(x); } })();
-  // Слоти будуються з графіка SALON.hours. Зайнятість умовна (демо): підключіть календар, щоб показувати реальну.
+  // Слоти з графіка SALON.hours. Зайнятість умовна (демо): підключіть календар, щоб показувати реальну.
   function slotsFor(date) {
     var hrs = SALON.hours[date.getDay()], out = [], now = Date.now(), need = Math.max(30, totals().time);
     if (!hrs) return out;
     for (var m = hrs[0] * 60; m + 30 <= hrs[1] * 60; m += 30) {
       var tt = new Date(date); tt.setHours(Math.floor(m / 60), m % 60);
-      var tooLate = m + Math.min(need, 120) > hrs[1] * 60;   // не записуємо впритул до закриття
-      out.push({ label: Math.floor(m / 60) + ':' + (m % 60 ? '30' : '00'), min: m, busy: tt.getTime() < now + 3600000 || tooLate || (date.getDate() * 31 + m) % 11 < 4 });
+      out.push({ label: Math.floor(m / 60) + ':' + (m % 60 ? '30' : '00'), min: m, busy: tt.getTime() < now + 3600000 || m + Math.min(need, 120) > hrs[1] * 60 || (date.getDate() * 31 + m) % 11 < 4 });
     }
     return out;
   }
   function renderDays() {
     $('#days').innerHTML = days.map(function (d, i) {
-      var off = !SALON.hours[d.getDay()];
-      var lbl = i === 0 ? t('today') : i === 1 ? t('tomorrow') : t('dow')[d.getDay()];
+      var off = !SALON.hours[d.getDay()], lbl = i === 0 ? t('today') : i === 1 ? t('tomorrow') : t('dow')[d.getDay()];
       return '<button type="button" data-d="' + i + '" aria-pressed="' + (state.day === i) + '"' + (off ? ' disabled' : '') + ' aria-label="' + d.getDate() + ' ' + t('mon_full')[d.getMonth()] + (off ? ', ' + t('dayoff') : '') + '"><small>' + lbl + '</small><b>' + d.getDate() + '</b><small>' + t('mon')[d.getMonth()] + '</small></button>';
     }).join('');
     renderSlots(false);
   }
   function renderSlots(animate) {
-    if (state.day == null) { $('#slots').innerHTML = '<p class="form__sum">' + t('pick_day') + '</p>'; return; }
+    if (state.day == null) { $('#slots').innerHTML = '<p class="hintline">' + t('pick_day') + '</p>'; return; }
     var list = slotsFor(days[state.day]);
+    if (state.slot && !list.some(function (s) { return s.label === state.slot && !s.busy; })) state.slot = null;
     $('#slots').innerHTML = list.some(function (s) { return !s.busy; }) ? list.map(function (s) {
       return '<button type="button" data-s="' + s.label + '" data-m="' + s.min + '"' + (s.busy ? ' disabled aria-label="' + s.label + ', ' + t('busy') + '"' : '') + ' aria-pressed="' + (state.slot === s.label) + '">' + s.label + '</button>';
-    }).join('') : '<p class="form__sum">' + t('no_slots') + '</p>';
+    }).join('') : '<p class="hintline">' + t('no_slots') + '</p>';
     if (animate !== false && window.MOTION) window.MOTION.pop($$('#slots button'));
   }
-  $('#days').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b || b.disabled) return; state.day = +b.dataset.d; state.slot = null; $$('#days button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); renderSlots(); });
+  $('#days').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b || b.disabled) return;
+    state.day = +b.dataset.d; state.slot = null;
+    $$('#days button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    renderSlots(); update();
+  });
   $('#slots').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b || b.disabled) return;
     state.slot = b.dataset.s; state.slotMin = +b.dataset.m;
     $$('#slots button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    update();
   });
 
-  function validate(step) {
-    err.textContent = ''; $$('.bad').forEach(function (x) { x.classList.remove('bad'); });
-    var bad = function (id, k) { if (id) { $(id).classList.add('bad'); $(id).focus(); } err.textContent = t(k); if (window.MOTION) window.MOTION.shake(err); return false; };
-    if (step === 0 && !$('#f-dog').value.trim()) return bad('#f-dog', 'err_dog');
-    if (step === 1 && !state.picked.length) return bad(null, 'err_svc');
-    if (step === 2 && (state.day == null || !state.slot)) return bad(null, 'err_slot');
-    if (step === 3) {
-      if (!$('#f-name').value.trim()) return bad('#f-name', 'err_name');
-      if ($('#f-phone').value.replace(/\D/g, '').length < 10) return bad('#f-phone', 'err_phone');
-    }
-    return true;
+  var val = function (id) { return $(id).value.trim(); };
+  function parts() {
+    var d = state.day != null ? days[state.day] : null, tt = totals(), breed = val('#f-breed');
+    return {
+      dog: val('#f-dog'), breed: breed, size: f(SIZES[state.size], 'name').toLowerCase(),
+      svc: state.picked.map(function (id) { return f(byId[id], 'name').toLowerCase(); }).join(', '),
+      date: d && state.slot ? d.getDate() + ' ' + t('mon_full')[d.getMonth()] + ', ' + state.slot : '',
+      sum: tt.sum ? fmt(tt.sum) + ', ≈ ' + fmtTime(tt.time) : '',
+      name: val('#f-name'), phone: val('#f-phone'), note: val('#f-note')
+    };
   }
-  function goStep(n) {
-    var prev = state.step; state.step = n;
-    fsets.forEach(function (fs, i) { fs.hidden = i !== n; });
-    stepLabels.forEach(function (s, i) { s.classList.toggle('on', i <= n); });
-    $('#prevStep').hidden = n === 0; $('#nextStep').hidden = n === fsets.length - 1; $('#submitBtn').hidden = n !== fsets.length - 1;
-    err.textContent = '';
-    if (n === 0) movePills();
-    if (n === 2 && state.day != null) renderSlots(false);
-    if (window.MOTION && prev !== n) window.MOTION.step(fsets[n], n > prev ? 1 : -1);
-  }
-  $('#nextStep').onclick = function () { if (validate(state.step)) goStep(state.step + 1); };
-  $('#prevStep').onclick = function () { goStep(state.step - 1); };
-  function scrollToEl(sel) { if (window.lenis) window.lenis.scrollTo(sel, { offset: -40, duration: 1.4 }); else $(sel).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
-  window.scrollToEl = scrollToEl;
-
-  var draftIds = ['f-dog', 'f-breed', 'f-name', 'f-phone', 'f-note'], draft = store.get('draft') || {};
-  draftIds.forEach(function (id) { if (draft[id]) $('#' + id).value = draft[id]; });
-  $('#bookForm').addEventListener('input', function (e) { if (draftIds.indexOf(e.target.id) > -1) { draft[e.target.id] = e.target.value; store.set('draft', draft); } });
-
-  function buildMessage() {
-    var d = days[state.day], tt = totals(), via = ($('input[name="via"]:checked') || {}).value;
-    var breed = $('#f-breed').value.trim(), note = $('#f-note').value.trim();
+  // html=true: для бульбашки (порожні поля показуємо підказками), інакше чистий текст для копіювання
+  function message(html) {
+    var p = parts(), ph = function (v, k) { return v ? (html ? esc(v) : v) : (html ? '<span class="ph">' + t(k) + '</span>' : '—'); };
     var lines = [
-      t('msg_hi'),
-      t('msg_dog') + ': ' + $('#f-dog').value.trim() + ' (' + (breed ? breed + ', ' : '') + f(SIZES[state.size], 'name').toLowerCase() + ')',
-      t('msg_svc') + ': ' + state.picked.map(function (id) { return f(byId[id], 'name').toLowerCase(); }).join(', '),
-      t('msg_date') + ': ' + d.getDate() + ' ' + t('mon_full')[d.getMonth()] + ', ' + state.slot,
-      t('msg_sum') + ': ' + fmt(tt.sum) + ', ≈ ' + fmtTime(tt.time),
-      t('msg_name') + ': ' + $('#f-name').value.trim(),
-      t('msg_phone') + ': ' + $('#f-phone').value.trim(),
-      t('msg_via') + ': ' + t('via')[via]
+      html ? esc(t('msg_hi')) : t('msg_hi'),
+      t('msg_dog') + ': ' + ph(p.dog, 'ph_dog') + ' (' + (p.breed ? (html ? esc(p.breed) : p.breed) + ', ' : '') + p.size + ')',
+      t('msg_svc') + ': ' + ph(p.svc, 'ph_svc'),
+      t('msg_date') + ': ' + ph(p.date, 'ph_date')
     ];
-    if (note) lines.push(t('msg_note') + ': ' + note);
+    if (p.sum) lines.push(t('msg_sum') + ': ' + p.sum);
+    lines.push(t('msg_name') + ': ' + ph(p.name, 'ph_name'));
+    lines.push(t('msg_phone') + ': ' + ph(p.phone, 'ph_phone'));
+    if (p.note) lines.push(t('msg_note') + ': ' + (html ? esc(p.note) : p.note));
     return lines.join('\n');
   }
-  $('#bookForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    for (var k = 0; k < 4; k++) { if (!validate(k)) { if (k !== state.step) { goStep(k); validate(k); } return; } }
-    var msg = buildMessage(), d = days[state.day];
-    state.lastMsg = msg; state.lastMin = totals().time;
-    state.lastDate = new Date(d); state.lastDate.setHours(Math.floor(state.slotMin / 60), state.slotMin % 60);
-    /* ПІДКЛЮЧЕННЯ: якщо додати window.sendBooking (див. README), заявка ще й надсилатиметься автоматично */
-    if (typeof window.sendBooking === 'function') { try { window.sendBooking({ text: msg, lang: I.lang }); } catch (x) { /* ignore */ } }
-    $('#doneMsg').textContent = msg;
-    fsets.forEach(function (fs) { fs.hidden = true; });
-    $('.form__steps').hidden = true; $('.form__nav').hidden = true; err.textContent = '';
-    $('#done').hidden = false; if (window.MOTION) window.MOTION.step($('#done'), 1);
-    copyText(msg, t('copied'), $('#doneMsg'));
-    draft = {}; store.set('draft', {});
+  function update() {
+    var tt = totals(), n = state.picked.length, p = parts();
+    tweenText($('#visitSum'), tt.sum, fmt);
+    $('#visitText').textContent = n ? n + ' ' + plural(n) + ' · ≈ ' + fmtTime(tt.time) : t('nothing');
+    tweenText($('#formSum'), tt.sum, fmt);
+    $('#formTime').textContent = '≈ ' + fmtTime(tt.time);
+    $('#bubble').innerHTML = message(true);
+    var grps = $$('.grp');
+    grps[0].classList.toggle('is-done', !!p.dog);
+    grps[1].classList.toggle('is-done', n > 0);
+    grps[2].classList.toggle('is-done', !!p.date);
+    grps[3].classList.toggle('is-done', !!p.name && p.phone.replace(/\D/g, '').length >= 10);
+    visitBar();
+  }
+  function missing() {
+    var p = parts(), miss = [], grps = $$('.grp');
+    grps.forEach(function (g) { g.classList.remove('bad'); });
+    $$('.field input').forEach(function (x) { x.classList.remove('bad'); });
+    if (!p.dog) { miss.push(t('ph_dog')); grps[0].classList.add('bad'); $('#f-dog').classList.add('bad'); }
+    if (!p.svc) { miss.push(t('ph_svc')); grps[1].classList.add('bad'); }
+    if (!p.date) { miss.push(t('ph_date')); grps[2].classList.add('bad'); }
+    if (!p.name) { miss.push(t('ph_name')); grps[3].classList.add('bad'); $('#f-name').classList.add('bad'); }
+    if (p.phone.replace(/\D/g, '').length < 10) { miss.push(t('ph_phone')); grps[3].classList.add('bad'); $('#f-phone').classList.add('bad'); }
+    return miss;
+  }
+  function checkOrSay() {
+    var miss = missing(), err = $('#formErr');
+    if (!miss.length) { err.textContent = ''; return true; }
+    err.textContent = I.fill(t('need'), { f: miss.join(', ') });
+    if (window.MOTION) window.MOTION.shake(err);
+    var firstBad = $('.grp.bad'); if (firstBad) firstBad.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    return false;
+  }
+  $('#bookForm').addEventListener('input', function () { $('#formErr').textContent = ''; update(); saveDraft(); });
+  $('#bookForm').addEventListener('submit', function (e) { e.preventDefault(); });
+  $('#sendDirect').addEventListener('click', function () {
+    if (!checkOrSay()) return;
+    var text = message(false);
+    if (typeof window.sendBooking === 'function') { try { window.sendBooking({ text: text, lang: I.lang }); } catch (x) { /* ignore */ } }
+    copyText(text, t('copied_open'));
+    window.open(IG, '_blank', 'noopener');
   });
-  $('#copyMsg').addEventListener('click', function () { copyText(state.lastMsg, t('copied'), $('#doneMsg')); });
-  $('#sendDirect').addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText(state.lastMsg).catch(function () {}); });
-  // .ics-файл для календаря
+  $('#copyMsg').addEventListener('click', function () { if (checkOrSay()) copyText(message(false), t('copied')); });
   $('#addCal').addEventListener('click', function () {
-    if (!state.lastDate) return;
+    if (state.day == null || !state.slot) { $('#formErr').textContent = t('need_date'); return; }
+    var start = new Date(days[state.day]); start.setHours(Math.floor(state.slotMin / 60), state.slotMin % 60);
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
     var stamp = function (dt) { return dt.getUTCFullYear() + pad(dt.getUTCMonth() + 1) + pad(dt.getUTCDate()) + 'T' + pad(dt.getUTCHours()) + pad(dt.getUTCMinutes()) + '00Z'; };
-    var end = new Date(state.lastDate.getTime() + Math.max(30, state.lastMin) * 60000);
+    var end = new Date(start.getTime() + Math.max(30, totals().time) * 60000);
     var escI = function (s) { return s.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/[,;]/g, '\\$&'); };
     var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//BB Pets//Booking//UK', 'BEGIN:VEVENT',
-      'UID:' + Date.now() + '@bbpets', 'DTSTAMP:' + stamp(new Date()), 'DTSTART:' + stamp(state.lastDate), 'DTEND:' + stamp(end),
-      'SUMMARY:' + escI(t('cal_title')), 'LOCATION:' + escI(f(SALON, 'address')), 'DESCRIPTION:' + escI(state.lastMsg),
+      'UID:' + Date.now() + '@bbpets', 'DTSTAMP:' + stamp(new Date()), 'DTSTART:' + stamp(start), 'DTEND:' + stamp(end),
+      'SUMMARY:' + escI(t('cal_title')), 'LOCATION:' + escI(f(SALON, 'address')), 'DESCRIPTION:' + escI(message(false)),
       'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:' + escI(t('cal_title')), 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'bbpets-grooming.ics';
     document.body.appendChild(a); a.click(); a.remove(); toast(t('cal_saved'));
   });
-  function resetBooking() {
-    ['f-dog', 'f-breed', 'f-note'].forEach(function (id) { $('#' + id).value = ''; });
-    state.day = null; state.slot = null; renderDays();
-    $('#done').hidden = true; $('.form__steps').hidden = false; $('.form__nav').hidden = false; goStep(0);
-  }
-  $('#newBooking').onclick = function () { resetBooking(); $('#f-dog').focus(); };
+  $('#resetForm').addEventListener('click', function () {
+    ['#f-dog', '#f-breed', '#f-name', '#f-phone', '#f-note'].forEach(function (id) { $(id).value = ''; });
+    state.picked.slice().forEach(function (id) { togglePick(id, false); });
+    state.day = null; state.slot = null; renderDays(); saveDraft(); update(); toast(t('cleared'));
+  });
+  var draftIds = ['f-dog', 'f-breed', 'f-name', 'f-phone', 'f-note'], draft = store.get('draft') || {};
+  draftIds.forEach(function (id) { if (draft[id]) $('#' + id).value = draft[id]; });
+  function saveDraft() { draftIds.forEach(function (id) { draft[id] = $('#' + id).value; }); store.set('draft', draft); }
 
-  /* ---------- навігація, прогрес, кнопка «нагору» ---------- */
-  var nav = $('#nav'), burger = $('#burger');
+  function scrollToEl(sel) { if (window.lenis) window.lenis.scrollTo(sel, { offset: -40, duration: 1.4 }); else $(sel).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
+  window.scrollToEl = scrollToEl;
+
+  /* ---------- навігація, прогрес, нижня панель ---------- */
+  var nav = $('#nav'), burger = $('#burger'), sheet = $('#services'), dock = $('#dock'), booking = $('#booking');
   function setMenu(open) {
     nav.classList.toggle('is-open', open); burger.setAttribute('aria-expanded', open);
     if (window.lenis) { if (open) window.lenis.stop(); else window.lenis.start(); }
@@ -417,16 +445,21 @@
   var lastY = 0, bar = $('#progressBar'), toTop = $('#toTop'), ring = $('#toTopRing'), C = 2 * Math.PI * 22;
   ring.style.strokeDasharray = C;
   function onScroll() {
-    var y = window.scrollY, max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, y / max) : 0;
+    var y = window.scrollY, max = root.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, y / max) : 0;
+    root.classList.toggle('is-scrolled', y > 30);
+    var onDark = sheet.getBoundingClientRect().top > nav.offsetHeight;
+    nav.classList.toggle('is-dark', onDark); nav.classList.toggle('is-light', !onDark);
     nav.classList.toggle('is-solid', y > 40);
-    if (y > 400 && y > lastY + 4 && !nav.classList.contains('is-open')) nav.classList.add('is-hidden');
-    if (y < lastY - 4 || y < 400) nav.classList.remove('is-hidden');
+    if (y > 500 && y > lastY + 4 && !nav.classList.contains('is-open')) nav.classList.add('is-hidden');
+    if (y < lastY - 4 || y < 500) nav.classList.remove('is-hidden');
     bar.style.transform = 'scaleX(' + p + ')';
     ring.style.strokeDashoffset = C * (1 - p);
     toTop.classList.toggle('is-on', y > innerHeight * 1.2 && !visit.classList.contains('is-on'));
+    var b = booking.getBoundingClientRect();
+    dock.classList.toggle('is-on', y > innerHeight * 0.6 && !(b.top < innerHeight && b.bottom > 0) && !visit.classList.contains('is-on'));
     lastY = y;
   }
-  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
   toTop.addEventListener('click', function () { if (window.lenis) window.lenis.scrollTo(0, { duration: 1.6 }); else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
   if ('IntersectionObserver' in window) {
     var links = {}; $$('#menu a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
@@ -436,8 +469,8 @@
     Object.keys(links).forEach(function (id) { var s = document.getElementById(id); if (s) io.observe(s); });
   }
 
-  /* ---------- тема ---------- */
-  var root = document.documentElement, saved = store.get('theme');
+  /* ---------- тема і мова ---------- */
+  var saved = store.get('theme');
   if (saved) root.setAttribute('data-theme', saved);
   $('#themeBtn').addEventListener('click', function () {
     var cur = root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -445,32 +478,26 @@
     var go = function () { root.setAttribute('data-theme', next); store.set('theme', next); toast(t(next)); };
     if (window.MOTION) window.MOTION.curtain(go); else go();
   });
-
-  /* ---------- мова ---------- */
   $$('[data-lang]').forEach(function (b) {
     b.addEventListener('click', function () {
       var lang = b.dataset.lang; if (lang === I.lang) return;
       if (window.MOTION) window.MOTION.curtain(function () { I.set(lang); }); else I.set(lang);
     });
   });
-  document.addEventListener('langchange', function () {
-    renderAll(true);
-    if (!$('#done').hidden && state.lastDate) { /* залишаємо вже сформований текст */ }
-  });
+  document.addEventListener('langchange', function () { renderAll(true); });
 
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-copy]'); if (!b) return;
-    var el = document.getElementById(b.dataset.copy); copyText(el.textContent.trim(), t('phone_copied'), el);
+    copyText(document.getElementById(b.dataset.copy).textContent.trim(), t('phone_copied'));
   });
   $('#year').textContent = new Date().getFullYear();
 
   /* ---------- старт ---------- */
   function renderAll(relang) {
-    renderTabs(); renderCats(); renderPrice(false); renderPick(); renderDays(); renderStatus(); renderContacts(); updateTotals();
+    renderTabs(); renderCats(); renderPrice(false); renderChips(); renderDays(); renderToday(); renderStatic(); update();
     if (relang) { relabelGallery(); renderGalTabs(); } else { renderGalTabs(); renderGallery(); }
-    if (state.day != null) renderSlots(false);
   }
-  renderAll(false); goStep(0);
-  setInterval(renderStatus, 60000);
+  renderAll(false); setStep(0); onScroll();
+  setInterval(renderToday, 60000);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePills);
 })();
