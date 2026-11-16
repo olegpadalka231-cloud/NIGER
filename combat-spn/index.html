@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="uk" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Combat СпН — військовий одяг і спорядження в камуфляжі «Хижак»</title>
+<meta name="description" content="Combat СпН: український виробник військового одягу та тактичного спорядження з 2005 року. Оригінальний камуфляж «Хижак», патент №28778. Костюми, рюкзаки, плитоноски, підсумки.">
+<meta property="og:title" content="Combat СпН · камуфляж «Хижак»">
+<meta property="og:description" content="Військовий одяг і спорядження власного виробництва з 2005 року.">
+<meta property="og:image" content="img/brand/slide2.jpg">
+<meta name="theme-color" content="#121412">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="img/brand/znak.png">
+<script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<a class="skip" href="#main" data-i18n="skip">Перейти до змісту</a>
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+<div class="curtain" id="curtain" aria-hidden="true"><span>COMBAT СпН</span></div>
+
+<p class="concept"><span data-i18n="concept">Неофіційний концепт сайту. Актуальні ціни та наявність уточнюйте за телефоном</span> <a href="tel:+380951019911">+38 (095) 101-99-11</a></p>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a class="logo" href="#top" aria-label="Combat СпН: на початок" data-i18n-attr="aria-label:logo_al">
+      <img src="img/brand/znak.png" alt="" width="34" height="34">
+      <span>COMBAT <b>СпН</b></span>
+    </a>
+    <nav class="menu" id="menu" aria-label="Головне меню" data-i18n-attr="aria-label:menu_al">
+      <a href="#catalog" data-i18n="m_catalog">Каталог</a>
+      <a href="#hyzhak" data-i18n="m_hyzhak">«Хижак»</a>
+      <a href="#size" data-i18n="m_size">Розміри</a>
+      <a href="#units" data-i18n="m_units">Підрозділам</a>
+      <a href="#about" data-i18n="m_about">Про нас</a>
+      <a href="#contacts" data-i18n="m_contacts">Контакти</a>
+    </nav>
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Мова" data-i18n-attr="aria-label:lang_al">
+        <button type="button" data-lang="uk" aria-pressed="true">UA</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" type="button" id="searchBtn" aria-label="Пошук" data-i18n-attr="aria-label:search_al">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      </button>
+      <button class="icon-btn cart-btn" type="button" id="cartBtn" aria-label="Кошик" data-i18n-attr="aria-label:cart_al">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="cart-btn__n" id="cartCount">0</span>
+      </button>
+      <button class="burger" id="burger" type="button" aria-label="Меню" data-i18n-attr="aria-label:menu_open" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO: «приціл дрона» над фото -->
+<section class="hero" id="top">
+  <div class="hero__scene" id="scene">
+    <img class="hero__img" id="heroImg" src="img/brand/slide2.jpg" alt="Бійці в камуфляжі «Хижак» на полі" data-i18n-attr="alt:hero_alt">
+    <div class="hero__shade" aria-hidden="true"></div>
+    <div class="lens" id="lens" aria-hidden="true">
+      <div class="lens__view" id="lensView"></div>
+      <i class="lens__cross"></i>
+      <span class="lens__tl" id="lensCoord">X 0000 · Y 0000</span>
+      <span class="lens__br" id="lensStatus">ПОШУК ЦІЛІ…</span>
+    </div>
+    <div class="hud" aria-hidden="true">
+      <span class="hud__rec"><i></i>REC · DRONE CAM 02</span>
+      <span id="hudAlt">ALT 120 м · ZOOM ×2.4</span>
+    </div>
+  </div>
+  <div class="wrap hero__in">
+    <p class="kicker" data-i18n="kicker">Власне виробництво в Україні · з 2005 року</p>
+    <h1 class="hero__title">
+      <span class="line"><span data-i18n="h1_1">Камуфляж,</span></span>
+      <span class="line"><span data-i18n="h1_2">що <em>працює</em></span></span>
+    </h1>
+    <p class="hero__lead" data-i18n="lead">Військовий одяг і тактичне спорядження в оригінальному камуфляжі «Хижак». Розроблено з урахуванням досвіду бійців, випробувано в бою, пошито в Києві.</p>
+    <div class="hero__cta">
+      <a class="btn btn--sand" href="#catalog"><span data-i18n="to_catalog">До каталогу</span><i aria-hidden="true">→</i></a>
+      <a class="btn btn--line" href="#units"><span data-i18n="to_units">Замовлення для підрозділу</span></a>
+    </div>
+    <p class="hero__hint" data-i18n="hint">Наведіть курсор на фото: так бачить поле оператор дрона</p>
+  </div>
+</section>
+
+<!-- ФАКТИ -->
+<section class="facts" aria-label="Факти" data-i18n-attr="aria-label:facts_al">
+  <div class="wrap facts__in">
+    <div class="fact"><b data-count="2005" data-plain="1">2005</b><span data-i18n="fact1">рік заснування, працюємо понад 20 років</span></div>
+    <div class="fact"><b data-count="62">62</b><span data-i18n="fact2">вироби пройшли військові випробування у 2010 році</span></div>
+    <div class="fact"><b>№<span data-count="28778" data-plain="1">28778</span></b><span data-i18n="fact3">патент на камуфляж «Хижак» від 26.01.2015</span></div>
+    <div class="fact"><b data-count="1000" data-suffix="+">1000+</b><span data-i18n="fact4">комплектів безоплатно передано Силам оборони у 2022</span></div>
+  </div>
+</section>
+
+<!-- КАТАЛОГ -->
+<section class="section catalog" id="catalog">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="kicker" data-i18n="cat_k">Магазин</p>
+        <h2 data-anim="lines"><span class="line"><span data-i18n="cat_h">Каталог</span></span></h2>
+      </div>
+      <p class="sec-head__note" id="catCount"></p>
+    </div>
+
+    <div class="filters" id="filters">
+      <label class="search" for="q">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" type="search" placeholder="Пошук: рюкзак, «Хижак», плитоноска…" data-i18n-attr="placeholder:q_ph" autocomplete="off">
+      </label>
+      <div class="filters__row">
+        <div class="chips" id="catChips" role="group" aria-label="Категорії" data-i18n-attr="aria-label:cats_al"></div>
+      </div>
+      <div class="filters__row filters__row--end">
+        <label class="price-f"><span data-i18n="price_to">Ціна до</span> <output id="priceOut">—</output>
+          <input id="priceMax" type="range" min="0" max="8000" step="100" value="8000">
+        </label>
+        <label class="select"><span class="sr-only" data-i18n="sort_al">Сортування</span>
+          <select id="sort">
+            <option value="pop" data-i18n="s_pop">Спочатку популярні</option>
+            <option value="asc" data-i18n="s_asc">Ціна: дешевші</option>
+            <option value="desc" data-i18n="s_desc">Ціна: дорожчі</option>
+            <option value="name" data-i18n="s_name">За назвою</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <ul class="grid" id="grid"></ul>
+    <p class="empty" id="empty" hidden data-i18n="empty">Нічого не знайдено. Спробуйте інше слово або скиньте фільтри.</p>
+    <div class="more"><button class="btn btn--line" type="button" id="moreBtn"><span data-i18n="more">Показати ще</span></button></div>
+  </div>
+</section>
+
+<!-- ХИЖАК -->
+<section class="section hyzhak" id="hyzhak">
+  <canvas class="hyzhak__camo" id="camo" aria-hidden="true"></canvas>
+  <div class="wrap hyzhak__in">
+    <div class="hyzhak__head">
+      <p class="kicker" data-i18n="hz_k">Патент №28778</p>
+      <h2 data-anim="lines"><span class="line"><span data-i18n="hz_h1">Універсальний</span></span><span class="line"><span data-i18n="hz_h2">камуфляж <em>«Хижак»</em></span></span></h2>
+      <p data-i18n="hz_p">Правильний камуфляж — це не просто принт. Це інструмент маскування, що враховує рельєф, сезонність і спектральні особливості середовища. «Хижак» розроблено, виготовлено й випробувано в частині спеціального призначення ГУР МО України.</p>
+      <ul class="hz-tags">
+        <li data-i18n="hz_t1">6 варіантів забарвлення</li>
+        <li data-i18n="hz_t2">Під українську місцевість</li>
+        <li data-i18n="hz_t3">Тканини з NIR-покриттям</li>
+      </ul>
+      <p class="hz-cmp"><span data-i18n="hz_cmp">За маскувальними характеристиками на території України перевищує відомі універсальні зразки:</span> <b>Multicam · A-TACS · MTP · Pencott</b></p>
+      <p class="note" data-i18n="hz_note">Фон секції: стилізований піксельний візерунок, а не оригінальний патентований малюнок.</p>
+    </div>
+    <ol class="timeline" id="timeline">
+      <li><b>2005</b><span data-i18n="tl1">Перші вироби під торговою маркою COMBAT СпН: спецобмундирування й тактичне спорядження.</span></li>
+      <li><b>2010</b><span data-i18n="tl2">62 найменування пройшли офіційні військові випробування в частині спецпризначення ВМС ЗСУ. Визнані такими, що відповідають стандартам України та НАТО.</span></li>
+      <li><b>2014–2022</b><span data-i18n="tl3">Вироби використовують спецпідрозділи ГУР МО України, ССО ЗСУ та військова розвідка.</span></li>
+      <li><b>2015</b><span data-i18n="tl4">Патент №28778 на цифровий візерунок «Хижак» (робоча назва «Павутина»).</span></li>
+      <li><b>2017–2023</b><span data-i18n="tl5">«Хижак» на озброєнні ЦСО НГУ «Омега».</span></li>
+      <li><b>2022</b><span data-i18n="tl6">Понад 1000 комплектів спорядження безоплатно передано підрозділам Сил оборони.</span></li>
+      <li><b>2024</b><span data-i18n="tl7">Уся продукція виготовляється тільки з якісних тканин у ліцензійному камуфляжі «Хижак».</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ПЕРЕВАГИ -->
+<section class="section why" id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="kicker" data-i18n="why_k">Надійність у деталях</p>
+        <h2 data-anim="lines"><span class="line"><span data-i18n="why_h1">Це не перепродаж.</span></span><span class="line"><span data-i18n="why_h2"><em>Це власне виробництво.</em></span></span></h2>
+      </div>
+    </div>
+    <ul class="why__grid">
+      <li data-anim="fade"><span class="why__n">01</span><b data-i18n="w1_t">Міцні матеріали</b><p data-i18n="w1_d">Зносостійкі тканини й фурнітура для інтенсивної експлуатації: Cordura 500D, ріп-стоп, NYCO.</p></li>
+      <li data-anim="fade"><span class="why__n">02</span><b data-i18n="w2_t">Сумісність із MOLLE</b><p data-i18n="w2_d">Повна інтеграція з сучасними розвантажувальними системами й модульним спорядженням.</p></li>
+      <li data-anim="fade"><span class="why__n">03</span><b data-i18n="w3_t">Ергономічний крій</b><p data-i18n="w3_d">Продумане розміщення елементів для комфорту в русі та роботі зі спорядженням.</p></li>
+      <li data-anim="fade"><span class="why__n">04</span><b data-i18n="w4_t">Перевірено в бою</b><p data-i18n="w4_d">Конструкції доопрацьовуються з урахуванням досвіду військових у польових умовах.</p></li>
+    </ul>
+    <figure class="why__photo" data-anim="reveal"><img src="img/brand/work.jpg" alt="Бійці в маскувальних костюмах у лісі" data-i18n-attr="alt:work_alt" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- РОЗМІРИ -->
+<section class="section size" id="size">
+  <div class="wrap size__in">
+    <div>
+      <p class="kicker" data-i18n="sz_k">Підбір розміру</p>
+      <h2 data-anim="lines"><span class="line"><span data-i18n="sz_h1">Ваш розмір</span></span><span class="line"><span data-i18n="sz_h2"><em>за 10 секунд</em></span></span></h2>
+      <p class="muted" data-i18n="sz_p">Розмір військового одягу дорівнює половині обхвату грудей, а зріст позначається цифрою від 1 до 6. Виміряйте обхват грудей по найвиступаючих точках поверх білизни.</p>
+    </div>
+    <form class="sizecalc" id="sizeCalc" novalidate>
+      <label class="field"><span data-i18n="sz_chest">Обхват грудей, см</span><input id="chest" type="number" inputmode="numeric" min="80" max="140" value="100"></label>
+      <label class="field"><span data-i18n="sz_height">Зріст, см</span><input id="height" type="number" inputmode="numeric" min="150" max="205" value="178"></label>
+      <div class="sizecalc__res" aria-live="polite">
+        <span class="kicker" data-i18n="sz_res">Ваш розмір</span>
+        <output id="sizeOut">50/4</output>
+        <p id="sizeNote"></p>
+      </div>
+      <table class="sizetab" aria-label="Таблиця зростів" data-i18n-attr="aria-label:sz_tab">
+        <thead><tr><th data-i18n="sz_th1">Зріст</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+        <tbody><tr><th data-i18n="sz_th2">см</th><td>158–164</td><td>164–170</td><td>170–176</td><td>176–182</td><td>182–188</td><td>188–194</td></tr></tbody>
+      </table>
+    </form>
+  </div>
+</section>
+
+<!-- ПІДРОЗДІЛАМ -->
+<section class="section units" id="units">
+  <div class="wrap units__in">
+    <div class="units__copy">
+      <p class="kicker" data-i18n="un_k">Опт і підрозділи</p>
+      <h2 data-anim="lines"><span class="line"><span data-i18n="un_h1">Комплектуємо</span></span><span class="line"><span data-i18n="un_h2"><em>підрозділи</em></span></span></h2>
+      <p data-i18n="un_p">Одягаємо й екіпіруємо підрозділи ЗСУ, НГУ та добровольчі формування. Опишіть потребу, і ми підготуємо пропозицію: асортимент, розмірну сітку, терміни виробництва.</p>
+      <ul class="steps4">
+        <li><b>1</b><span data-i18n="st1">Обговорення потреби й завдань</span></li>
+        <li><b>2</b><span data-i18n="st2">Пропозиція, зразки, розмірна сітка</span></li>
+        <li><b>3</b><span data-i18n="st3">Виробництво з контролем якості</span></li>
+        <li><b>4</b><span data-i18n="st4">Передача й супровід</span></li>
+      </ul>
+    </div>
+    <form class="uform" id="unitForm" novalidate>
+      <div class="row">
+        <label class="field"><span data-i18n="u_org">Підрозділ або організація</span><input id="u-org" autocomplete="organization"></label>
+        <label class="field"><span data-i18n="u_name">Контактна особа</span><input id="u-name" autocomplete="name"></label>
+      </div>
+      <div class="row">
+        <label class="field"><span data-i18n="u_phone">Телефон</span><input id="u-phone" type="tel" autocomplete="tel" placeholder="+380"></label>
+        <label class="field"><span data-i18n="u_qty">Кількість комплектів</span><input id="u-qty" type="number" inputmode="numeric" min="1" placeholder="20"></label>
+      </div>
+      <label class="field"><span data-i18n="u_need">Що потрібно</span><textarea id="u-need" rows="4" placeholder="Наприклад: костюм «Горка Комбат» 20 шт, розміри 48–56, рюкзаки «Рейд» 10 шт" data-i18n-attr="placeholder:u_need_ph"></textarea></label>
+      <button class="link-btn" type="button" id="fromCart" data-i18n="u_fromcart">Підставити товари з кошика</button>
+      <p class="form-err" id="unitErr" role="alert"></p>
+      <div class="send-row">
+        <span class="kicker" data-i18n="send_via">Надіслати через</span>
+        <div class="send-btns" data-form="unit">
+          <button class="btn btn--sand btn--sm" type="button" data-via="whatsapp">WhatsApp</button>
+          <button class="btn btn--line btn--sm" type="button" data-via="viber">Viber</button>
+          <button class="btn btn--line btn--sm" type="button" data-via="telegram">Telegram</button>
+          <button class="btn btn--line btn--sm" type="button" data-via="email">Email</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ПРО НАС -->
+<section class="section about" id="about">
+  <div class="wrap about__in">
+    <div class="about__gal">
+      <figure data-anim="reveal"><img src="img/brand/about1.jpg" alt="" loading="lazy"></figure>
+      <figure data-anim="reveal"><img src="img/brand/people.jpg" alt="" loading="lazy"></figure>
+      <figure data-anim="reveal"><img src="img/brand/about3.jpg" alt="" loading="lazy"></figure>
+    </div>
+    <div class="about__copy">
+      <p class="kicker" data-i18n="ab_k">Про нас</p>
+      <h2 data-anim="lines"><span class="line"><span data-i18n="ab_h1">За кожним виробом —</span></span><span class="line"><span data-i18n="ab_h2"><em>реальні люди</em></span></span></h2>
+      <p data-i18n="ab_p1">Ті, хто використовує наше спорядження щодня. Хто тестує його в русі, під навантаженням, у реальних умовах. Ми контролюємо кожен етап: від розробки до фінальної перевірки якості.</p>
+      <p data-i18n="ab_p2">Співпрацюємо з військовими, волонтерами й авторами контенту: від ідеї та дизайну до виробництва спільного продукту.</p>
+      <h3 class="certs__h" data-i18n="certs">Сертифікати й патенти</h3>
+      <ul class="certs" id="certs">
+        <li><button type="button" data-cert="1"><img src="img/brand/cert1.jpg" alt="Сертифікат 1" loading="lazy"></button></li>
+        <li><button type="button" data-cert="2"><img src="img/brand/cert2.jpg" alt="Сертифікат 2" loading="lazy"></button></li>
+        <li><button type="button" data-cert="3"><img src="img/brand/cert3.jpg" alt="Сертифікат 3" loading="lazy"></button></li>
+        <li><button type="button" data-cert="4"><img src="img/brand/cert4.jpg" alt="Сертифікат 4" loading="lazy"></button></li>
+        <li><button type="button" data-cert="5"><img src="img/brand/cert5.jpg" alt="Сертифікат 5" loading="lazy"></button></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТАКТИ -->
+<section class="section contacts" id="contacts">
+  <div class="wrap contacts__in">
+    <div>
+      <p class="kicker" data-i18n="ct_k">Контакти</p>
+      <h2 data-anim="lines"><span class="line"><span data-i18n="ct_h1">Київ,</span></span><span class="line"><span data-i18n="ct_h2"><em>вул. С. Скляренка, 9</em></span></span></h2>
+      <p class="muted" data-i18n="ct_p">4 поверх. Відвідування офісу за попередньою домовленістю.</p>
+      <p class="status"><i class="dot" id="statusDot"></i><span id="statusText"></span></p>
+    </div>
+    <div class="ccards">
+      <a class="ccard" href="tel:+380951019911"><span class="kicker" data-i18n="c_call">Телефон</span><b>+38 (095) 101-99-11</b><small data-i18n="c_call_s">Прийом замовлень</small></a>
+      <a class="ccard" href="viber://chat?number=%2B380951019911"><span class="kicker">Viber</span><b>+38 (095) 101-99-11</b><small data-i18n="c_write">Написати</small></a>
+      <a class="ccard" href="https://wa.me/380951019911" target="_blank" rel="noopener"><span class="kicker">WhatsApp</span><b>+38 (095) 101-99-11</b><small data-i18n="c_write">Написати</small></a>
+      <a class="ccard" href="mailto:spncombat@gmail.com"><span class="kicker">Email</span><b>spncombat@gmail.com</b><small data-i18n="c_mail_s">Для підрозділів і співпраці</small></a>
+      <div class="ccard ccard--hours"><span class="kicker" data-i18n="c_hours">Графік</span><ul class="hours" id="hours"></ul></div>
+      <a class="ccard ccard--map" href="https://www.google.com/maps/search/?api=1&amp;query=%D0%9A%D0%B8%D1%97%D0%B2%2C%20%D0%B2%D1%83%D0%BB.%20%D0%A1%D0%B5%D0%BC%D0%B5%D0%BD%D0%B0%20%D0%A1%D0%BA%D0%BB%D1%8F%D1%80%D0%B5%D0%BD%D0%BA%D0%B0%2C%209" target="_blank" rel="noopener"><span class="kicker" data-i18n="c_map">Маршрут</span><b data-i18n="c_map_b">Відкрити в Google Maps ↗</b></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__big" aria-hidden="true">ХИЖАК</div>
+    <div class="foot__row">
+      <img src="img/brand/logo.png" alt="Combat SPN" width="139" height="43">
+      <p>© <span id="year"></span> <span data-i18n="foot">Військовий одяг та спорядження «Combat СпН». Концепт сайту, дані з spn.kiev.ua.</span></p>
+      <a href="https://www.facebook.com/SPNCOMBAT/" target="_blank" rel="noopener">Facebook ↗</a>
+    </div>
+  </div>
+</footer>
+
+<!-- нижня панель на телефоні -->
+<nav class="dock" id="dock" aria-label="Швидкі дії" data-i18n-attr="aria-label:dock_al">
+  <a href="#catalog" data-i18n="m_catalog">Каталог</a>
+  <button type="button" id="dockCart"><span data-i18n="cart">Кошик</span> <b id="dockCount">0</b></button>
+  <a href="tel:+380951019911" class="dock__call" data-i18n="call">Подзвонити</a>
+</nav>
+
+<!-- КАРТКА ТОВАРУ -->
+<div class="modal" id="pmodal" hidden role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+  <div class="modal__box pm">
+    <button class="modal__close" type="button" data-close aria-label="Закрити" data-i18n-attr="aria-label:close">✕</button>
+    <div class="pm__gal">
+      <div class="pm__main" id="pmMain"></div>
+      <div class="pm__thumbs" id="pmThumbs"></div>
+    </div>
+    <div class="pm__info">
+      <span class="kicker" id="pmCat"></span>
+      <p class="pm__en" id="pmEn"></p>
+      <h3 id="pmTitle"></h3>
+      <p class="pm__price" id="pmPrice"></p>
+      <div class="pm__opts" id="pmOpts">
+        <label class="field field--sel"><span data-i18n="o_size">Розмір</span><select id="pmSize"></select></label>
+        <label class="field field--sel"><span data-i18n="o_height">Зріст</span><select id="pmHeight"></select></label>
+        <a class="link-btn" href="#size" data-close data-i18n="o_help">Як визначити розмір?</a>
+      </div>
+      <div class="pm__buy">
+        <div class="qty" role="group" aria-label="Кількість" data-i18n-attr="aria-label:qty_al">
+          <button type="button" id="pmMinus" aria-label="Менше" data-i18n-attr="aria-label:less">−</button>
+          <output id="pmQty">1</output>
+          <button type="button" id="pmPlus" aria-label="Більше" data-i18n-attr="aria-label:moreq">+</button>
+        </div>
+        <button class="btn btn--sand" type="button" id="pmAdd"><span data-i18n="add">У кошик</span></button>
+      </div>
+      <div class="pm__desc" id="pmDesc"></div>
+      <button class="link-btn" type="button" id="pmShare" data-i18n="share">Скопіювати посилання на товар</button>
+    </div>
+  </div>
+</div>
+
+<!-- КОШИК -->
+<div class="drawer" id="cart" hidden role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div class="drawer__box">
+    <div class="drawer__head">
+      <h3 id="cartTitle" data-i18n="cart">Кошик</h3>
+      <button class="modal__close" type="button" data-close aria-label="Закрити" data-i18n-attr="aria-label:close">✕</button>
+    </div>
+    <div class="drawer__body">
+      <ul class="citems" id="citems"></ul>
+      <p class="cempty" id="cempty" data-i18n="cempty">Кошик порожній. Додайте щось із каталогу.</p>
+      <form class="checkout" id="checkout" novalidate>
+        <h4 data-i18n="co_h">Оформлення</h4>
+        <div class="row">
+          <label class="field"><span data-i18n="co_name">Ім'я та прізвище</span><input id="co-name" autocomplete="name"></label>
+          <label class="field"><span data-i18n="co_phone">Телефон</span><input id="co-phone" type="tel" autocomplete="tel" placeholder="+380"></label>
+        </div>
+        <div class="row">
+          <label class="field"><span data-i18n="co_city">Місто</span><input id="co-city" autocomplete="address-level2"></label>
+          <label class="field"><span data-i18n="co_np">Відділення Нової пошти</span><input id="co-np" placeholder="№"></label>
+        </div>
+        <label class="field"><span data-i18n="co_note">Коментар</span><input id="co-note"></label>
+        <p class="form-err" id="coErr" role="alert"></p>
+      </form>
+    </div>
+    <div class="drawer__foot" id="cartFoot">
+      <div class="drawer__sum"><span data-i18n="total">Разом</span><output id="cartSum">0 ₴</output></div>
+      <p class="drawer__note" data-i18n="co_hint">Замовлення складеться в повідомлення. Оберіть, куди надіслати: менеджер підтвердить наявність і вартість доставки.</p>
+      <div class="send-btns" data-form="cart">
+        <button class="btn btn--sand btn--sm" type="button" data-via="whatsapp">WhatsApp</button>
+        <button class="btn btn--line btn--sm" type="button" data-via="viber">Viber</button>
+        <button class="btn btn--line btn--sm" type="button" data-via="telegram">Telegram</button>
+        <button class="btn btn--line btn--sm" type="button" data-via="email">Email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ПЕРЕГЛЯД СЕРТИФІКАТА -->
+<div class="modal" id="cmodal" hidden role="dialog" aria-modal="true" aria-label="Сертифікат">
+  <div class="modal__box cm">
+    <button class="modal__close" type="button" data-close aria-label="Закрити" data-i18n-attr="aria-label:close">✕</button>
+    <img id="certImg" src="" alt="">
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/products.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/fx.js"></script>
+</body>
+</html>
