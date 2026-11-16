@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="uk" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BB Pets — грумінг-студія для собак</title>
+<meta name="description" content="BB Pets Groom Studio: комплексний грумінг, модельні стрижки, тримінг і SPA для собак усіх порід. Онлайн-запис за хвилину.">
+<meta property="og:title" content="BB Pets — грумінг-студія для собак">
+<meta property="og:description" content="Комплексний грумінг, модельні стрижки, тримінг і SPA. Онлайн-запис.">
+<meta property="og:image" content="img/hero.jpg">
+<meta name="theme-color" content="#1F3329">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F3329'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23D9C3A0' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.classList.replace('no-js','js');</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Перейти до змісту</a>
+
+<!-- Прелоадер -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__word"><span>B</span><span>B</span><span>&nbsp;</span><span>P</span><span>e</span><span>t</span><span>s</span></div>
+  <div class="loader__line"><i></i></div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span>Дивитись</span></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a class="logo" href="#top" aria-label="BB Pets: на початок">
+      <span class="logo__word">BB Pets</span>
+      <span class="logo__sub">groom studio</span>
+    </a>
+    <nav class="menu" id="menu" aria-label="Головне меню">
+      <a href="#about">Студія</a>
+      <a href="#services">Послуги й ціни</a>
+      <a href="#process">Процес</a>
+      <a href="#gallery">Наші пси</a>
+      <a href="#faq">Питання</a>
+      <a href="#contacts">Контакти</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="theme" id="themeBtn" type="button" aria-label="Змінити тему">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16Z"/></svg>
+      </button>
+      <a class="btn btn--solid btn--sm magnetic" href="#booking"><span>Записатися</span></a>
+      <button class="burger" id="burger" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero__in">
+    <div class="hero__copy">
+      <p class="eyebrow" data-anim="fade">Грумінг-студія для собак</p>
+      <h1 class="hero__title" data-anim="lines">
+        <span class="line"><span>Догляд, гідний</span></span>
+        <span class="line"><span><em>вашого</em> улюбленця</span></span>
+      </h1>
+      <p class="hero__lead" data-anim="fade">Комплексний грумінг, породні стрижки, тримінг і SPA. Один майстер від початку до кінця, професійна косметика і жодного поспіху.</p>
+      <div class="hero__cta" data-anim="fade">
+        <a class="btn btn--solid btn--lg magnetic" href="#booking"><span>Записатися онлайн</span><i class="arr" aria-hidden="true">→</i></a>
+        <a class="btn btn--line btn--lg" href="#services"><span>Ціни</span></a>
+      </div>
+    </div>
+    <figure class="hero__media">
+      <div class="hero__img" id="heroImg"><img src="img/hero.jpg" alt="Доглянутий голден-ретривер після грумінгу" width="1400" height="1750" fetchpriority="high"></div>
+      <figcaption>Голден-ретривер · комплексний грумінг</figcaption>
+      <div class="seal" aria-hidden="true">
+        <svg viewBox="0 0 120 120"><defs><path id="circ" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#circ">BB PETS · GROOM STUDIO · З ЛЮБОВ'Ю · </textPath></text></svg>
+        <span>✦</span>
+      </div>
+    </figure>
+  </div>
+  <div class="hero__facts wrap">
+    <div data-anim="fade"><span class="label">Без седації</span><p>Тільки терпіння, ласощі та досвід майстра</p></div>
+    <div data-anim="fade"><span class="label">1 собака, 1 майстер</span><p>Ніяких черг на столі й кліток</p></div>
+    <div data-anim="fade"><span class="label">Фото-звіт</span><p>Надсилаємо після кожного візиту</p></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marquee">
+    <span>Шпіц</span><span>Пудель</span><span>Йорк</span><span>Мальтіпу</span><span>Самоїд</span><span>Шнауцер</span><span>Бішон</span><span>Корґі</span><span>Ши-тцу</span><span>Голден</span>
+    <span>Шпіц</span><span>Пудель</span><span>Йорк</span><span>Мальтіпу</span><span>Самоїд</span><span>Шнауцер</span><span>Бішон</span><span>Корґі</span><span>Ши-тцу</span><span>Голден</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section about" id="about">
+  <div class="wrap about__in">
+    <p class="label" data-anim="fade">Про студію</p>
+    <p class="about__text" data-anim="words">Ми віримо, що грумінг — це не лише гарна стрижка. Це спокій, безпека й довіра. Тому кожен пес у нас отримує стільки часу, скільки потрібно: знайомство, теплу воду, тихий фен і майстра, який помічає кожну дрібницю.</p>
+    <div class="about__media">
+      <figure class="pframe pframe--a" data-anim="reveal"><img src="img/brushing.jpg" alt="Майстер розчісує шерсть ретривера" loading="lazy" data-parallax="-8"></figure>
+      <figure class="pframe pframe--b" data-anim="reveal"><img src="img/studio.jpg" alt="Лабрадор у студії" loading="lazy" data-parallax="8"></figure>
+      <ul class="about__list">
+        <li data-anim="fade"><b>Професійна косметика</b><span>Гіпоалергенні засоби під тип шерсті: від шовкової йоркської до подвійної шпіцевої.</span></li>
+        <li data-anim="fade"><b>Стерильність</b><span>Інструменти обробляємо після кожного клієнта, столи й ванни дезінфікуємо.</span></li>
+        <li data-anim="fade"><b>Точно в час</b><span>Запис на конкретну годину. Напишемо, коли пес буде готовий.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label" data-anim="fade">Послуги й ціни</p>
+      <h2 data-anim="lines"><span class="line"><span>Прайс, що рахує</span></span><span class="line"><span><em>за вас</em></span></span></h2>
+      <p class="sec-head__note" data-anim="fade">Оберіть розмір собаки, і ціни перерахуються. Позначте послуги, і ми покажемо суму та тривалість візиту.</p>
+    </div>
+
+    <div class="svc-tools" data-anim="fade">
+      <div class="tabs" role="radiogroup" aria-label="Розмір собаки" id="sizeTabs"></div>
+      <div class="cats" role="group" aria-label="Категорія" id="catTabs"></div>
+    </div>
+
+    <ul class="price" id="priceList"></ul>
+    <p class="fineprint">Ціни орієнтовні. Колтуни, сильне забруднення або складна поведінка можуть потребувати додаткового часу. Майстер завжди попереджає до початку роботи.</p>
+  </div>
+
+  <div class="visit" id="visitBar" aria-live="polite">
+    <div class="visit__in">
+      <div class="visit__info"><span class="label">Ваш візит</span><span id="visitText">Нічого не обрано</span></div>
+      <output class="visit__sum" id="visitSum">0 ₴</output>
+      <button class="btn btn--accent btn--sm" type="button" id="visitBook"><span>Записатися</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS (горизонтальний скрол на десктопі) -->
+<section class="process" id="process">
+  <div class="process__pin">
+    <div class="process__head wrap">
+      <p class="label">Як проходить візит</p>
+      <h2>П'ять кроків<br><em>до ідеалу</em></h2>
+    </div>
+    <ol class="process__track" id="processTrack">
+      <li class="pstep"><span class="pstep__n">01</span><h3>Знайомство</h3><p>Даємо псу обнюхати студію, обговорюємо з вами стрижку, звички й особливості здоров'я.</p></li>
+      <li class="pstep"><span class="pstep__n">02</span><h3>Купання</h3><p>Шампунь і кондиціонер під тип шерсті, вода комфортної температури, масаж під час миття.</p></li>
+      <li class="pstep"><span class="pstep__n">03</span><h3>Сушка</h3><p>Компресор і фен на тихому режимі, ретельне вичісування підшерстя.</p></li>
+      <li class="pstep"><span class="pstep__n">04</span><h3>Стрижка</h3><p>За стандартом породи або за вашим фото. Кігті, вушка, лапи та гігієнічні зони.</p></li>
+      <li class="pstep"><span class="pstep__n">05</span><h3>Фото-звіт</h3><p>Надсилаємо фото і поради з догляду вдома. Нагадаємо, коли час на наступний візит.</p></li>
+    </ol>
+    <div class="process__bar wrap" aria-hidden="true"><i id="processBar"></i></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section gallery-sec" id="gallery">
+  <div class="wrap">
+    <div class="sec-head sec-head--row">
+      <div>
+        <p class="label" data-anim="fade">Наші пси</p>
+        <h2 data-anim="lines"><span class="line"><span>Хвостаті клієнти</span></span><span class="line"><span><em>після візиту</em></span></span></h2>
+      </div>
+      <div class="cats" role="group" aria-label="Фільтр галереї" id="galTabs" data-anim="fade"></div>
+    </div>
+    <div class="gallery" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="insta">
+  <a class="insta__link" href="https://www.instagram.com/bbpetsgroom/" target="_blank" rel="noopener">
+    <span class="label">Більше робіт щодня в Instagram</span>
+    <span class="insta__big" data-anim="lines"><span class="line"><span>@bbpetsgroom <i aria-hidden="true">↗</i></span></span></span>
+  </a>
+</section>
+
+<!-- BOOKING -->
+<section class="section booking-sec" id="booking">
+  <div class="wrap booking">
+    <div class="booking__copy">
+      <p class="label" data-anim="fade">Онлайн-запис</p>
+      <h2 data-anim="lines"><span class="line"><span>Оберіть</span></span><span class="line"><span><em>зручний час</em></span></span></h2>
+      <p data-anim="fade">Залиште заявку, і майстер підтвердить запис протягом 15 хвилин у робочий час. Передоплата не потрібна.</p>
+      <figure class="pframe pframe--book" data-anim="reveal"><img src="img/g-samoyed.jpg" alt="" loading="lazy" data-parallax="6"></figure>
+    </div>
+
+    <form class="form" id="bookForm" novalidate data-anim="fade">
+      <div class="form__steps" aria-hidden="true"><span class="on">Пес</span><span>Послуги</span><span>Час</span><span>Контакти</span></div>
+
+      <fieldset class="fs" data-step="0">
+        <legend>Розкажіть про пса</legend>
+        <div class="row">
+          <label class="field"><span>Кличка</span><input id="f-dog" name="dog" required placeholder="Наприклад, Бусинка"></label>
+          <label class="field"><span>Порода</span><input id="f-breed" name="breed" list="breeds" placeholder="Почніть вводити"></label>
+        </div>
+        <datalist id="breeds">
+          <option value="Померанський шпіц"><option value="Той-пудель"><option value="Йоркширський тер'єр"><option value="Мальтіпу"><option value="Ши-тцу"><option value="Бішон фрізе"><option value="Мальтезе"><option value="Цвергшнауцер"><option value="Вельш-корґі"><option value="Самоїд"><option value="Голден-ретривер"><option value="Сибірський хаскі"><option value="Чіхуахуа"><option value="Джек-рассел-тер'єр"><option value="Метис">
+        </datalist>
+        <span class="label">Розмір</span>
+        <div class="tabs tabs--form" role="radiogroup" aria-label="Розмір собаки у формі" id="formSize"></div>
+      </fieldset>
+
+      <fieldset class="fs" data-step="1" hidden>
+        <legend>Що робимо?</legend>
+        <div class="pick" id="formServices"></div>
+        <p class="form__sum">Орієнтовно <b id="formSum">0 ₴</b> · <span id="formTime">0 хв</span></p>
+      </fieldset>
+
+      <fieldset class="fs" data-step="2" hidden>
+        <legend>Дата і час</legend>
+        <div class="days" id="days"></div>
+        <div class="slots" id="slots"></div>
+      </fieldset>
+
+      <fieldset class="fs" data-step="3" hidden>
+        <legend>Як з вами зв'язатися</legend>
+        <div class="row">
+          <label class="field"><span>Ваше ім'я</span><input id="f-name" name="name" required autocomplete="name" placeholder="Олена"></label>
+          <label class="field"><span>Телефон</span><input id="f-phone" name="phone" required type="tel" autocomplete="tel" placeholder="+380 67 123 45 67"></label>
+        </div>
+        <label class="field"><span>Коментар (необов'язково)</span><textarea id="f-note" name="note" rows="3" placeholder="Алергії, побажання щодо стрижки, як пес реагує на фен"></textarea></label>
+        <div class="via" role="radiogroup" aria-label="Куди надіслати підтвердження">
+          <label><input type="radio" name="via" value="Telegram" checked> Telegram</label>
+          <label><input type="radio" name="via" value="Viber"> Viber</label>
+          <label><input type="radio" name="via" value="Дзвінок"> Дзвінок</label>
+        </div>
+      </fieldset>
+
+      <p class="form__err" id="formErr" role="alert"></p>
+      <div class="form__nav">
+        <button class="btn btn--line" type="button" id="prevStep" hidden><span>Назад</span></button>
+        <button class="btn btn--solid" type="button" id="nextStep"><span>Далі</span><i class="arr" aria-hidden="true">→</i></button>
+        <button class="btn btn--solid" type="submit" id="submitBtn" hidden><span>Надіслати заявку</span></button>
+      </div>
+
+      <div class="done" id="done" hidden>
+        <svg class="done__check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+        <h3>Заявку прийнято</h3>
+        <p id="doneText"></p>
+        <button class="btn btn--line" type="button" id="newBooking"><span>Записати ще одного пса</span></button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap faq">
+    <div class="faq__head">
+      <p class="label" data-anim="fade">Питання</p>
+      <h2 data-anim="lines"><span class="line"><span>Часті</span></span><span class="line"><span><em>запитання</em></span></span></h2>
+      <p class="muted" data-anim="fade">Не знайшли відповіді? Напишіть нам у Direct, відповідаємо швидко.</p>
+    </div>
+    <div class="faq__list" id="faqList">
+      <details data-anim="fade"><summary>З якого віку можна на грумінг?</summary><div class="faq__a"><p>Перше знайомство з грумінгом радимо після завершення вакцинації, зазвичай у 3–4 місяці. Для цуценят є окрема м'яка процедура: коротке купання, лапки, кігтики й багато похвали.</p></div></details>
+      <details data-anim="fade"><summary>Чи потрібні щеплення?</summary><div class="faq__a"><p>Так, пес має бути щеплений від сказу та комплексних інфекцій. Візьміть із собою ветпаспорт на перший візит.</p></div></details>
+      <details data-anim="fade"><summary>Скільки триває процедура?</summary><div class="faq__a"><p>Від години для гігієни маленького пса до 4 годин для комплексного грумінгу великої собаки з густим підшерстям. Точний час покаже прайс вище.</p></div></details>
+      <details data-anim="fade"><summary>Чи можна бути поруч під час грумінгу?</summary><div class="faq__a"><p>Більшість собак спокійніша без господаря поруч, тому зазвичай ми просимо залишити пса з майстром. Для дуже тривожних собак домовимось індивідуально.</p></div></details>
+      <details data-anim="fade"><summary>Що робите з колтунами?</summary><div class="faq__a"><p>Невеликі колтуни розбираємо вручну зі спеціальними засобами. Якщо шерсть сильно звалялась, безпечніше й гуманніше коротко постригти. Ми завжди погоджуємо це з вами заздалегідь.</p></div></details>
+      <details data-anim="fade"><summary>Як часто потрібен грумінг?</summary><div class="faq__a"><p>Породам, що стрижуться (пудель, йорк, мальтіпу), раз на 4–6 тижнів. Собакам із подвійною шерстю (шпіц, самоїд, хаскі) експрес-линька раз на 6–8 тижнів, а в сезон линьки частіше.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTS: ЗАМІНІТЬ адресу, телефон і графік на справжні -->
+<section class="section contacts-sec" id="contacts">
+  <div class="wrap contacts">
+    <div>
+      <p class="label" data-anim="fade">Контакти</p>
+      <h2 data-anim="lines"><span class="line"><span>Чекаємо</span></span><span class="line"><span><em>в гості</em></span></span></h2>
+    </div>
+    <dl class="cinfo">
+      <div data-anim="fade"><dt>Адреса</dt><dd>м. Київ, вул. Прикладна, 12<small>Вхід з двору, є пандус</small></dd></div>
+      <div data-anim="fade"><dt>Телефон</dt><dd><span class="copy" id="phoneText">+380 00 000 00 00</span> <button class="mini" type="button" data-copy="phoneText">Копіювати</button></dd></div>
+      <div data-anim="fade"><dt>Графік</dt><dd>Пн–Сб 9:00–20:00<small>Нд 10:00–18:00</small></dd></div>
+      <div data-anim="fade"><dt>Instagram</dt><dd><a href="https://www.instagram.com/bbpetsgroom/" target="_blank" rel="noopener">@bbpetsgroom</a></dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__big" aria-hidden="true">BB Pets</div>
+    <div class="foot__row">
+      <p>© <span id="year"></span> BB Pets Groom Studio</p>
+      <a href="#top">Нагору ↑</a>
+      <a href="https://www.instagram.com/bbpetsgroom/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <button class="lightbox__close" type="button" id="lbClose" aria-label="Закрити">✕</button>
+  <div class="lightbox__in">
+    <div class="lightbox__img"><img id="lbImg" src="" alt=""></div>
+    <div class="lightbox__meta">
+      <span class="label" id="lbCount"></span>
+      <h3 id="lbTitle"></h3>
+      <p id="lbText"></p>
+      <div class="lightbox__nav">
+        <button class="round" type="button" id="lbPrev" aria-label="Попереднє фото">←</button>
+        <button class="round" type="button" id="lbNext" aria-label="Наступне фото">→</button>
+        <a class="btn btn--solid btn--sm" href="#booking" id="lbBook"><span>Хочу так само</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/motion.js"></script>
+</body>
+</html>
